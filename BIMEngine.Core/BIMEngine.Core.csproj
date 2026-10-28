@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <!-- .NET Framework 4.8 to match Revit 2024 and the ClashResolveAI build,
+         so both add-ins can eventually share this library without a
+         framework-compat headache. -->
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>BIMEngine.Core</AssemblyName>
+    <RootNamespace>BIMEngine.Core</RootNamespace>
+    <Platforms>x64</Platforms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!-- Class library only: pyRevit loads this DLL directly via clr.AddReference
+         inside the process Revit + pyRevit are already running in. No separate
+         .addin manifest, no second add-in registration. -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Web.Extensions" />
+    <!-- Point these at the actual Revit 2024 install, e.g.
+         C:\Program Files\Autodesk\Revit 2024\RevitAPI.dll
+         Set REVIT_API_PATH as an environment/MSBuild property, or edit
+         HintPath directly - kept out of source control either way since
+         it's a per-machine path. -->
+    <Reference Include="RevitAPI">
+      <HintPath>$(REVIT_API_PATH)\RevitAPI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>$(REVIT_API_PATH)\RevitAPIUI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

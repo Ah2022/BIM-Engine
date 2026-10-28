@@ -1,0 +1,7 @@
+title: Settings
+tooltip: >
+  Open scan settings in the dashboard's Scan panel. Choose category chips
+  and Include links, then press Scan to save results for that scope.
+author: Ahmed
+min_revit_version: 2024
+max_revit_version: 2024

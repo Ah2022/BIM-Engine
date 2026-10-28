@@ -1,0 +1,7 @@
+title: Scan
+tooltip: >
+  Open the Scan panel to choose categories and linked models, run a hard-clash
+  scan, and inspect results with inline progress and coverage details.
+author: Ahmed
+min_revit_version: 2024
+max_revit_version: 2024

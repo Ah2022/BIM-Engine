@@ -1,0 +1,47 @@
+# Local settings and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.vs/
+.vscode/
+.idea/
+.codex/
+.agents/
+*.user
+*.suo
+
+# Build products and generated package manifest
+**/bin/
+**/obj/
+BIMEngine.extension/build-manifest.json
+
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Generated Revit fixtures, local issue stores, and verification output
+/verification/*
+!/verification/.gitkeep
+*.rvt
+*.rfa
+*.rte
+*.rft
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.bak
+*.log
+*.zip
+
+# OS metadata
+Thumbs.db
+Desktop.ini
+.DS_Store

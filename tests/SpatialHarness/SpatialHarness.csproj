@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../BIMEngine.Core/Spatial/*.cs" Link="Spatial/%(Filename)%(Extension)" />
+    <Compile Include="../../BIMEngine.Core/Models/SpatialElement.cs" Link="SpatialElement.cs" />
+    <Compile Include="../../BIMEngine.Core/Dashboard/InspectionScene.cs" Link="InspectionScene.cs" />
+  </ItemGroup>
+</Project>

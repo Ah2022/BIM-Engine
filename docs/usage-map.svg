@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
+  <title id="title">BIM Engine usage map</title>
+  <desc id="desc">Six steps: build and install, prepare the project, choose scope and scan, inspect geometry, triage issues, and rescan the same scope. Complete same-scope scans resolve missing clashes; partial scans preserve history.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#438b9c"/></marker>
+    <style>
+      text{font-family:Segoe UI,Arial,sans-serif} .title{font-size:40px;font-weight:700;fill:#f0f7fc}.sub{font-size:18px;fill:#a7bfd0}.card{fill:#152c40;stroke:#2d4b61;stroke-width:1.5}.step{font-size:14px;font-weight:700;fill:#59d6c2;letter-spacing:2px}.head{font-size:24px;font-weight:600;fill:#f0f7fc}.body{font-size:17px;fill:#bbcfdd}.tag{font-size:14px;font-weight:600;fill:#83e3d3}.line{fill:none;stroke:#438b9c;stroke-width:3;marker-end:url(#arrow)}.foot{font-size:16px;fill:#9eb9cb}
+    </style>
+  </defs>
+  <rect width="1200" height="820" rx="24" fill="#0a1b2b"/>
+  <rect x="48" y="43" width="6" height="58" rx="3" fill="#59d6c2"/>
+  <text x="74" y="75" class="title">BIM ENGINE</text>
+  <text x="75" y="106" class="sub">From model intersections to coordinated decisions</text>
+  <rect x="894" y="52" width="254" height="38" rx="19" fill="#193b4a"/>
+  <text x="1021" y="77" text-anchor="middle" class="tag">REVIT 2024 · v0.3.1</text>
+
+  <rect x="48" y="153" width="336" height="208" rx="16" class="card"/>
+  <text x="72" y="185" class="step">01 / SET UP</text>
+  <text x="72" y="222" class="head">Build &amp; install</text>
+  <text x="72" y="257" class="body"><tspan x="72">Run build.ps1, then install.ps1.</tspan><tspan x="72" dy="27">Restart Revit with pyRevit</tspan><tspan x="72" dy="27">and CPython 3 enabled.</tspan></text>
+  <path d="M389 257H421" class="line"/>
+  <rect x="432" y="153" width="336" height="208" rx="16" class="card"/>
+  <text x="456" y="185" class="step">02 / PREPARE</text>
+  <text x="456" y="222" class="head">Open a saved project</text>
+  <text x="456" y="257" class="body"><tspan x="456">Load the links to coordinate.</tspan><tspan x="456" dy="27">BIMEngine → ModelScanner</tspan><tspan x="456" dy="27">Open the dashboard.</tspan></text>
+  <path d="M773 257H805" class="line"/>
+  <rect x="816" y="153" width="336" height="208" rx="16" class="card"/>
+  <text x="840" y="185" class="step">03 / DETECT</text>
+  <text x="840" y="222" class="head">Choose scope &amp; scan</text>
+  <text x="840" y="257" class="body"><tspan x="840">Select category chips.</tspan><tspan x="840" dy="27">Set Include links, press Scan.</tspan><tspan x="840" dy="27">Read coverage diagnostics.</tspan></text>
+  <path d="M984 367V420" class="line"/>
+
+  <rect x="816" y="432" width="336" height="208" rx="16" class="card"/>
+  <text x="840" y="464" class="step">04 / INSPECT</text>
+  <text x="840" y="501" class="head">Review the geometry</text>
+  <text x="840" y="536" class="body"><tspan x="840">Select a clash: 3D / 2D / Section.</tspan><tspan x="840" dy="27">Zoom, pan, and Fit Preview.</tspan><tspan x="840" dy="27">Pin as view only when needed.</tspan></text>
+  <path d="M810 536H779" class="line"/>
+  <rect x="432" y="432" width="336" height="208" rx="16" class="card"/>
+  <text x="456" y="464" class="step">05 / COORDINATE</text>
+  <text x="456" y="501" class="head">Triage &amp; record</text>
+  <text x="456" y="536" class="body"><tspan x="456">Filter, sort, and group clashes.</tspan><tspan x="456" dy="27">Review, ignore, note, or assign.</tspan><tspan x="456" dy="27">Coordinate model changes.</tspan></text>
+  <path d="M426 536H395" class="line"/>
+  <rect x="48" y="432" width="336" height="208" rx="16" class="card"/>
+  <text x="72" y="464" class="step">06 / VERIFY</text>
+  <text x="72" y="501" class="head">Rescan the same scope</text>
+  <text x="72" y="536" class="body"><tspan x="72">Track new and recurring issues.</tspan><tspan x="72" dy="27">Complete scans resolve missing</tspan><tspan x="72" dy="27">clashes; history stays available.</tspan></text>
+  <path d="M216 426V396H1090V374" stroke-dasharray="6 6" class="line"/>
+  <text x="460" y="387" class="foot">repeat with the same scan scope</text>
+
+  <rect x="48" y="678" width="1104" height="94" rx="14" fill="#102638"/>
+  <circle cx="78" cy="707" r="6" fill="#48cbbc"/><text x="94" y="713" class="foot">A: teal</text>
+  <circle cx="200" cy="707" r="6" fill="#f5a24a"/><text x="216" y="713" class="foot">B: orange</text>
+  <circle cx="346" cy="707" r="6" fill="#ef646c"/><text x="362" y="713" class="foot">Overlap: red</text>
+  <text x="78" y="746" class="foot">Previews leave the model unchanged. Pinning creates views. Partial scans preserve earlier issues.</text>
+  <text x="1148" y="800" text-anchor="end" font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#6e91a7">BIM Engine · Usage workflow</text>
+</svg>

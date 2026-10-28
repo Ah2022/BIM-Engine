@@ -1,0 +1,7 @@
+title: Issue Report
+tooltip: >
+  Opens the dockable clash dashboard with level/type filters, an interactive
+  2D location preview, Show 2D / Show 3D navigation, and Refresh / Rescan.
+author: Ahmed
+min_revit_version: 2024
+max_revit_version: 2024
