@@ -67,8 +67,34 @@ exact backup path to `verification/installation.json`.
 
 ### List and triage (Phase B)
 
+Use **Coordination pair** to select groups such as **Structure vs Sanitary**, then
+**Detailed pair** to narrow to a combination such as Beam / PL-Waste Pipe. Groups
+are generated from saved element categories and system classifications: Structure,
+Sanitary, Water Supply, Fire Protection, HVAC, Electrical, and Unassigned/Other.
+The exact names `PL-Waste` and `PL-Soil` are Sanitary fallbacks when classification
+is missing or generic. Known classifications take priority over these aliases.
+
+To see a system's clashes across all other groups, leave Coordination pair at All
+and choose **Focus system** (focus the dropdown and type the start of its name).
+The system can be on either side of the clash. **Against** defaults to All; select
+a group or exact system to filter the opposite element. Same-system clashes are
+included once. Elements with multiple systems match each listed system.
+
+Dropdown counts respect level, status and search. System choices also respect the
+coordination pair; Against choices respect the selected system. Detailed pairs
+are narrowed by all three. Changing a parent selection resets the detailed pair;
+changing Focus system also resets Against. A selection with no remaining matches
+stays visible with a zero count. Clear Filters resets the controls. Filters are
+retained on same-project refreshes and reset when switching projects.
+
+Choose **All statuses** to include Ignored and Resolved. The existing default
+remains Open and Reviewed. These controls filter saved results without rescanning
+or changing issue identities, notes, assignments or Revit elements.
+
 The list is flat by default. Click column headings to sort, or choose **Group by**
-Level, Pair (system/category pair type), or Status. A/B columns have category icons
+Coordination pair, Level, Pair (system/category pair type), or Status. If an element
+has multiple classifications, the combined group label keeps its clash in one row.
+A/B columns have category icons
 and stable colours by system type; grey means Unassigned. Hover for full labels.
 
 **Open** and **Reviewed** are shown when no status chip is selected. Selected status
@@ -83,7 +109,7 @@ volume-derived size score. Largest overlap and Newest first are also available.
 
 Select one clash for **Reviewed**, **Ignore**, **Add note**, or **Assign**. Notes
 append to existing text; assignment appends `Assigned to: Name` and the latest
-assignment is displayed in the list. Select a pair type using the Type filter,
+assignment is displayed in the list. Select a pair type using the Detailed pair filter,
 then Ctrl/Shift+click multiple rows and use **Mark selected ignored**. Bulk ignore
 requires one pair type and changes only the selected rows, in one transaction.
 Status, notes and assignments persist across scans. These edits do not alter the

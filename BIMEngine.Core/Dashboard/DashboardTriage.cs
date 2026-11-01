@@ -24,16 +24,21 @@ namespace BIMEngine.Core.Dashboard
 
         private void AddListFilters(StackPanel header)
         {
-            var chips = new WrapPanel { ToolTip = "Status chips combine. New and MEP vs Structure narrow the results. With no status selected, Open and Reviewed are shown." };
-            foreach (var name in new[] { "New", "Open", "Reviewed", "Ignored", "Resolved", "MEP vs Structure" })
+            var chips = new WrapPanel { ToolTip = "Status chips combine. All statuses includes ignored and resolved clashes. New and MEP vs Structure narrow the results. With no status selected, Open and Reviewed are shown." };
+            foreach (var name in new[] { "New", "Open", "Reviewed", "Ignored", "Resolved", "All statuses", "MEP vs Structure" })
             {
                 var chip = new CheckBox { Content = name, Foreground = Ink, Margin = new Thickness(6, 4, 6, 4) };
-                chip.Click += (s, e) => Filter(); quickFilters.Add(name, chip);
+                chip.Click += (s, e) => {
+                    if (name == "All statuses" && chip.IsChecked == true)
+                        foreach (var status in new[] { "Open", "Reviewed", "Ignored", "Resolved" }) quickFilters[status].IsChecked = false;
+                    else if (new[] { "Open", "Reviewed", "Ignored", "Resolved" }.Contains(name)) quickFilters["All statuses"].IsChecked = false;
+                    Filter();
+                }; quickFilters.Add(name, chip);
                 chips.Children.Add(new Border { Child = chip, Background = Panel, CornerRadius = new CornerRadius(10), Margin = new Thickness(0, 3, 5, 3) });
             }
             header.Children.Add(chips);
             var options = new WrapPanel();
-            grouping.ItemsSource = new[] { "None (flat)", "Level", "Pair", "Status" }; grouping.SelectedIndex = 0;
+            grouping.ItemsSource = new[] { "None (flat)", "Coordination pair", "Level", "Pair", "Status" }; grouping.SelectedIndex = 0;
             sorting.ItemsSource = new[] { "Most likely real", "Largest overlap", "Newest first", "Column sort" }; sorting.SelectedIndex = 0;
             sorting.ToolTip = "Most likely real: clashes with a named system first, then overlap size descending. A ranking aid, not a geometry verdict.";
             AddFilter(options, "GROUP BY", grouping, 145); AddFilter(options, "SORT", sorting, 175);
@@ -46,7 +51,7 @@ namespace BIMEngine.Core.Dashboard
         private bool MatchesQuickFilters(ClashRow row)
         {
             var statuses = new[] { "Open", "Reviewed", "Ignored", "Resolved" }.Where(x => quickFilters[x].IsChecked == true).ToArray();
-            if (!(statuses.Length == 0 ? row.Status == "Open" || row.Status == "Reviewed" : statuses.Contains(row.Status))) return false;
+            if (quickFilters["All statuses"].IsChecked != true && !(statuses.Length == 0 ? row.Status == "Open" || row.Status == "Reviewed" : statuses.Contains(row.Status))) return false;
             return (quickFilters["New"].IsChecked != true || row.Age == "New") &&
                 (quickFilters["MEP vs Structure"].IsChecked != true || row.IsMepStructure);
         }
@@ -55,6 +60,7 @@ namespace BIMEngine.Core.Dashboard
         {
             string group = grouping.SelectedItem as string;
             if (group == "Level" || group == "Status" || group == "Pair") view.GroupDescriptions.Add(new PropertyGroupDescription(group == "Pair" ? "Type" : group));
+            if (group == "Coordination pair") view.GroupDescriptions.Add(new PropertyGroupDescription("CoordinationPair"));
             if (sorting.SelectedIndex == 3 && previousSort != null)
                 foreach (var sort in previousSort) view.SortDescriptions.Add(sort);
             else
@@ -70,7 +76,7 @@ namespace BIMEngine.Core.Dashboard
             AddColumn("Issue", "Id", 55);
             AddBadgeColumn("Status", "Status", "StatusBrush", 90);
             AddElementColumn("A"); AddElementColumn("B");
-            AddColumn("Level", "Level", 85); AddColumn("Discipline pair", "DisciplinePair", 130);
+            AddColumn("Level", "Level", 85); AddColumn("Coordination pair", "CoordinationPair", 180);
             grid.Columns.Add(new DataGridTextColumn { Header = "Overlap size (mm)", Binding = new Binding("VolumeScore") { StringFormat = "{0:0.0}" }, SortMemberPath = "VolumeScore", Width = 130, MinWidth = 130 });
             AddBadgeColumn("Age", "Age", "AgeBrush", 80); AddColumn("Assigned to", "Assignee", 110);
             grid.ToolTip = "Ctrl+click or Shift+click to select multiple clashes. Bulk ignore is available for one pair type. Overlap is volume-derived, not penetration depth. Grey system icons mean Unassigned.";

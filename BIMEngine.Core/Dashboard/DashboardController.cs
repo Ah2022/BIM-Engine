@@ -68,13 +68,23 @@ namespace BIMEngine.Core.Dashboard
         public double VolumeScore { get; set; }
         public ClashElement A { get; set; }
         public ClashElement B { get; set; }
+        [ScriptIgnore]
+        public ClashCategoryInfo Categories { get; private set; }
+        [ScriptIgnore]
+        public string CoordinationPair => Categories?.PairLabel ?? "";
+        public void RefreshCategories()
+        {
+            Categories = new ClashCategoryInfo(
+                new ClashSideCategories(A.Category, A.SystemType, A.SystemClassification),
+                new ClashSideCategories(B.Category, B.SystemType, B.SystemClassification));
+        }
         public string Elements => (A.DisplayType ?? A.Category) + " #" + A.ElementId + " / " + (B.DisplayType ?? B.Category) + " #" + B.ElementId;
         public bool Matches(string level, string type, string search)
         {
             return (string.IsNullOrEmpty(level) || Level == level) &&
                 (string.IsNullOrEmpty(type) || Type == type) &&
                 (string.IsNullOrWhiteSpace(search) ||
-                 (Id + " " + Type + " " + Level + " " + A.Label + " " + B.Label + " " + A.SystemName + " " + B.SystemName + " " + A.FamilyType + " " + B.FamilyType + " " + Notes)
+                 (Id + " " + Type + " " + Level + " " + A.Label + " " + B.Label + " " + A.SystemName + " " + B.SystemName + " " + A.SystemType + " " + B.SystemType + " " + CoordinationPair + " " + A.FamilyType + " " + B.FamilyType + " " + Notes)
                     .IndexOf(search.Trim(), StringComparison.OrdinalIgnoreCase) >= 0);
         }
     }

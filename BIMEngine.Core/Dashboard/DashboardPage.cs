@@ -80,15 +80,16 @@ namespace BIMEngine.Core.Dashboard
             }));
             scanActions.Children.Add(scanStatus); scanPanel.Children.Add(scanActions);
             scanPanel.Children.Add(scanProgress); header.Children.Add(scanPanel);
+            AddClashFilters(header);
             var filters = new WrapPanel { Margin = new Thickness(0, 12, 0, 0) };
-            AddFilter(filters, "LEVEL", levels, 155); AddFilter(filters, "TYPE", types, 210);
+            AddFilter(filters, "LEVEL", levels, 155); AddFilter(filters, "DETAILED PAIR", types, 210);
             AddFilter(filters, "SEARCH", search, 180);
             header.Children.Add(filters);
             AddListFilters(header);
             var actions = new WrapPanel();
             undockButton = Button("Undock", ToggleFloating);
             actions.Children.Add(undockButton);
-            actions.Children.Add(Button("Clear Filters", () => { updating = true; levels.SelectedIndex = types.SelectedIndex = 0; search.Text = ""; foreach (var chip in quickFilters.Values) chip.IsChecked = false; updating = false; Filter(); }));
+            actions.Children.Add(Button("Clear Filters", () => { updating = true; ResetClashFilters(); levels.SelectedIndex = types.SelectedIndex = 0; search.Text = ""; foreach (var chip in quickFilters.Values) chip.IsChecked = false; updating = false; Filter(); }));
             actions.Children.Add(Button("Delete generated views", () => DashboardController.Request("cleanup")));
             header.Children.Add(actions);
             summary.Foreground = Teal; summary.TextWrapping = TextWrapping.NoWrap; summary.TextTrimming = TextTrimming.CharacterEllipsis;
@@ -268,6 +269,7 @@ namespace BIMEngine.Core.Dashboard
             previewPending = false; selectionTimer.Stop(); rawSummary.Text = ""; scanDetails.IsExpanded = false;
             snapshot = null; grid.ItemsSource = null; title.Text = "CLASH DASHBOARD"; summary.Text = text;
             count.Text = "0 active clashes"; updating = true;
+            ResetClashFilters();
             levels.ItemsSource = new[] { "All Levels" }; types.ItemsSource = new[] { "All Types" };
             levels.SelectedIndex = types.SelectedIndex = 0; search.Text = ""; updating = false; Inspect();
         }
@@ -276,6 +278,7 @@ namespace BIMEngine.Core.Dashboard
             bool same = snapshot?.Project == value.Project;
             string level = same ? levels.SelectedItem as string : null, type = same ? types.SelectedItem as string : null;
             snapshot = value; title.Text = "CLASH DASHBOARD · " + value.Title; summary.Text = value.SummaryStrip ?? value.Summary;
+            foreach (var row in value.Issues) row.RefreshCategories();
             summary.ToolTip = summary.Text; rawSummary.Text = value.Summary;
             if (!same && value.ScanConfig != null)
             {
@@ -287,7 +290,7 @@ namespace BIMEngine.Core.Dashboard
             types.ItemsSource = new[] { "All Types" }.Concat(value.Issues.Select(x => x.Type).Distinct().OrderBy(x => x)).ToArray();
             levels.SelectedItem = level; if (levels.SelectedIndex < 0) levels.SelectedIndex = 0;
             types.SelectedItem = type; if (types.SelectedIndex < 0) types.SelectedIndex = 0;
-            if (!same) { search.Text = ""; foreach (var chip in quickFilters.Values) chip.IsChecked = false; TriageSaved(); }
+            if (!same) { ResetClashFilters(); search.Text = ""; foreach (var chip in quickFilters.Values) chip.IsChecked = false; TriageSaved(); }
             updating = false; Filter();
             Inspect();
         }
@@ -307,11 +310,11 @@ namespace BIMEngine.Core.Dashboard
             long? selected = Selected?.Id;
             var selectedIds = new HashSet<long>(grid.SelectedItems.Cast<ClashRow>().Select(x => x.Id));
             string level = levels.SelectedIndex <= 0 ? null : levels.SelectedItem as string;
-            string type = types.SelectedIndex <= 0 ? null : types.SelectedItem as string;
-            var rows = snapshot.Issues.Where(x => x.Matches(level, type, search.Text) && MatchesQuickFilters(x)).ToList();
+            var rows = snapshot.Issues.Where(x => x.Matches(level, null, search.Text) && MatchesQuickFilters(x)).ToList();
+            updating = true;
+            rows = FilterClashCategories(rows);
             var view = new ListCollectionView(rows);
             var previousSort = (grid.ItemsSource as ListCollectionView)?.SortDescriptions.ToArray();
-            updating = true;
             grid.ItemsSource = view;
             ApplyListLayout(view, previousSort);
             count.Text = rows.Count + " shown / " + snapshot.Issues.Count + " saved clashes" + (rows.Count == 0 ? " · No matches" : "");
